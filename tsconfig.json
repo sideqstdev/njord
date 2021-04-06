@@ -1,0 +1,22 @@
+{
+    "compilerOptions": {
+        "module": "commonjs",
+        "skipLibCheck": true,
+        "target": "ES2018",
+        "lib": ["es2018", "esnext.asynciterable"],
+        "sourceMap": true,
+        "outDir": "dist/",
+        "baseUrl": "./src",
+        "inlineSources": true,
+        "noImplicitAny": false,
+        "moduleResolution": "node",
+        "allowSyntheticDefaultImports": true,
+        "resolveJsonModule": true,
+        "esModuleInterop": true,
+
+        "emitDecoratorMetadata": true,
+        "experimentalDecorators": true,
+        "forceConsistentCasingInFileNames": true /* Disallow inconsistently-cased references to the same file. */
+    },
+    "exclude": ["node_modules", "dist"]
+}
