@@ -10,44 +10,18 @@ generator client {
   provider = "prisma-client-js"
 }
 
-model Follower {
-  id String @default(uuid()) @id
-  created DateTime @default(now())
-  profile Profile @relation(fields: [profileId], references: [id]) // follower ID
-  profileId String
-}
-
-model Following {
-  id String @default(uuid()) @id
-  created DateTime @default(now())
-  profile Profile @relation(fields: [profileId], references: [id])
-  profileId String
-}
-
-model Friend {
-  id String @default(uuid()) @id
-  added DateTime @default(now())
-  profileId String
-  friendProfileId String
-  profile Profile @relation(name: "profile", fields: [profileId], references: [id])
-  friend Profile @relation(name: "friend", fields: [friendProfileId], references: [id])
-}
-
-model Profile {
+model Profile { // seperate public info about a user from their (mostly) private account info
   id String  @default(uuid()) @id
   bio String?
   tags String[]
   lolName String
-  avatar String?
-  followerCount Int @default(0)
-  followingCount Int @default(0)
-  followers Follower[]
-  following Following[]
-  userFriends Friend[] @relation(name: "profile")
-  friendFriends Friend[] @relation(name: "friend")
+  avatarUrl String?
+
+  // relational fields
   user User @relation(fields: [userId], references: [id])
   userId String @unique
 
+  // stats
   level Int @default(0) // levels are gained by hitting point thresholds
   points Int @default(0) // total points gained
   wins Int @default(0) // how many tournament wins
@@ -62,12 +36,33 @@ model User {
   lastLogin DateTime
   version Int @default(1)
 
+  // personal info
   name String?
   gamerTag String @unique
   email String @unique
   password String
   suspended Boolean @default(false)
-
   verified Boolean @default(false)
+
+  // relational fields
   profile Profile?
+}
+
+model Post {
+  id String @default(uuid()) @id
+  created DateTime @default(now())
+  updated DateTime @updatedAt
+  content String 
+  imageUrl String
+  tags String[]
+
+  // relational fields
+  user User @relation(fields: [userId], references: [id]) // post owner
+  userId String // post owner id
+}
+
+enum TournamentRole {
+  ATTENDEE
+  MOD
+  ADMIN
 }
