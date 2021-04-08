@@ -1,0 +1,3 @@
+-- AlterTable
+ALTER TABLE "Profile" ALTER COLUMN "lolName" DROP DEFAULT,
+ALTER COLUMN "avatarUrl" DROP DEFAULT;

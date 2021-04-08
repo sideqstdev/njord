@@ -1,11 +1,11 @@
 import { PrismaClient } from "@prisma/client";
 import { client } from "./client";
-import ContextInterface from "../types/interfaces/context.interface";
+import contextInterface from "../types/interfaces/context.interface";
 
-export const createContext = (req: any, res: any): ContextInterface => {
+export const createContext = (req: any, res: any): contextInterface => {
     return{
         ...req,
         ...res,
-        client,
+        prisma: client
     }
 } 

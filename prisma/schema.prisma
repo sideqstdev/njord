@@ -14,12 +14,12 @@ model Profile { // seperate public info about a user from their (mostly) private
   id String  @default(uuid()) @id
   bio String?
   tags String[]
-  lolName String
+  lolName String?
   avatarUrl String?
 
   // relational fields
-  user User @relation(fields: [userId], references: [id])
-  userId String @unique
+  user User? @relation(fields: [userId], references: [id])
+  userId String? @unique
 
   // stats
   level Int @default(0) // levels are gained by hitting point thresholds
@@ -33,7 +33,7 @@ model User {
   id  String @default(uuid()) @id 
   created DateTime @default(now())
   updated DateTime @updatedAt
-  lastLogin DateTime
+  lastLogin DateTime @default(now())
   version Int @default(1)
 
   // personal info
@@ -46,19 +46,20 @@ model User {
 
   // relational fields
   profile Profile?
+  posts Post[]
 }
 
 model Post {
   id String @default(uuid()) @id
   created DateTime @default(now())
   updated DateTime @updatedAt
-  content String 
-  imageUrl String
+  content String?
+  imageUrl String?
   tags String[]
 
   // relational fields
-  user User @relation(fields: [userId], references: [id]) // post owner
-  userId String // post owner id
+  user User? @relation(fields: [userId], references: [id]) // post owner
+  userId String? // post owner id
 }
 
 enum TournamentRole {

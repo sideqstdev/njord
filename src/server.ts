@@ -11,9 +11,6 @@ const start = async() => {
     // connect client to database explicitly
     await clientConnect();
 
-    const allUsers = await client.user.findMany()
-    console.log(allUsers)
-
     const schema = await createSchema();
 
     // define apollo server params
@@ -54,7 +51,7 @@ const start = async() => {
         LoggingService.info(`Server listening on ${url}`)
     }
     catch(err){
-        throw err
+        throw new Error(err)
     }
 
     
@@ -63,7 +60,4 @@ const start = async() => {
 start()
 .catch((err) => {
     LoggingService.error(`Server error: ${err}`)
-})
-.finally(async() => {
-    await clientDisconnect();
 })

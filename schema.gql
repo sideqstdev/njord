@@ -3,6 +3,48 @@
 # !!!   DO NOT MODIFY THIS FILE BY YOURSELF   !!!
 # -----------------------------------------------
 
+"""
+The javascript `Date` as string. Type represents date and time as the ISO Date string.
+"""
+scalar DateTime
+
+type Mutation {
+  createAccount(input: createAccount_input!): user!
+}
+
 type Query {
   status: String!
+}
+
+input createAccount_input {
+  email: String!
+  gamerTag: String!
+  password: String!
+}
+
+type profile {
+  avatarUrl: String
+  bio: String!
+  entered: Int!
+  hosted: Int!
+  id: ID!
+  level: Int!
+  lolName: String!
+  points: Int!
+  tags: [String!]!
+  user: user!
+  wins: Int!
+}
+
+type user {
+  created: DateTime
+  email: String!
+  gamerTag: String!
+  id: ID
+  lastLogin: DateTime
+  name: String
+  profile: profile
+  suspended: Boolean
+  updated: DateTime
+  version: Int
 }
