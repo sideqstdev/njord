@@ -1,4 +1,4 @@
-import { createAccountInput } from "../../types/inputs/createaccount.input";
+import { registerInput } from "../../types/inputs/createaccount.input";
 import contextInterface from "../../types/interfaces/context.interface";
 import { user } from "../../types/types/user.type";
 import { encrypt } from "../../services/auth.service";
@@ -7,7 +7,7 @@ import { User } from "@prisma/client";
 import LoggingService from "../../services/logging.service";
 import { randomBio } from "../../lib/defaultbios";
 
-export const createAccountQuery = async(input: createAccountInput, ctx: contextInterface): Promise<user> => {
+export const registerMutation = async(input: registerInput, ctx: contextInterface): Promise<user> => {
     try{
         if(input){
             // hash password first before doing anything else

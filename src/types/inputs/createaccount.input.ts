@@ -1,8 +1,8 @@
 import { InputType, Field } from "type-graphql";
 import { MinLength, IsEmail } from "class-validator";
 
-@InputType("createAccount_input")
-export class createAccountInput {
+@InputType("register_input")
+export class registerInput {
     @Field(() => String)
     @MinLength(3)
     gamerTag: string;

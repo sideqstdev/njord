@@ -43,6 +43,7 @@ model User {
   password String
   suspended Boolean @default(false)
   verified Boolean @default(false)
+  confirmed Boolean @default(false) // email verification
 
   // relational fields
   profile Profile?
