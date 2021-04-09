@@ -1,4 +1,4 @@
-import { registerInput } from "../../types/inputs/createaccount.input";
+import { registerInput } from "../../types/inputs/register.input";
 import contextInterface from "../../types/interfaces/context.interface";
 import { user } from "../../types/types/user.type";
 import { encrypt } from "../../services/auth.service";
@@ -6,6 +6,7 @@ import { client } from "../../lib/client";
 import { User } from "@prisma/client";
 import LoggingService from "../../services/logging.service";
 import { randomBio } from "../../lib/defaultbios";
+import { dev } from "../../lib/globals";
 
 export const registerMutation = async(input: registerInput, ctx: contextInterface): Promise<user> => {
     try{
@@ -66,7 +67,7 @@ export const registerMutation = async(input: registerInput, ctx: contextInterfac
             throw new Error(`An account already exists with the given gamerTag`)
         }
         else{
-            throw new Error(`Internal server error`)
+            throw new Error(`Internal server error ${dev ? `: ${err}` : null}`)
         }
     }
     

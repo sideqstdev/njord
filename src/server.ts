@@ -3,7 +3,7 @@ import LoggingService from './services/logging.service'
 import { ApolloServer } from 'apollo-server'
 import { client, clientConnect, clientDisconnect } from './lib/client'
 import { createContext } from './lib/context';
-import { dev, fallbackPort } from './lib/globals';
+import { dev, fallbackPort, port} from './lib/globals';
 import { createSchema } from './lib/schema';
 
 const start = async() => {
@@ -40,7 +40,6 @@ const start = async() => {
     })
 
     try{
-        const port: number = Number(process.env.PORT)
         if(!port){
             LoggingService.warn(`No port defined in env, defaulted to ${fallbackPort}`)
         }
