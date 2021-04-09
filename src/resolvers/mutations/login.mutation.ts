@@ -39,9 +39,8 @@ export const loginMutation = async(input: loginInput, ctx: contextInterface): Pr
                 sendRefreshToken(ctx.res, refreshToken);
                 sendAccessToken(ctx.res, accessToken);
 
-                console.log(ctx.res)
-
-                return userToReturn;            }
+                return userToReturn;            
+            }
         }else{
             LoggingService.error(`No login information provided`);
             throw new Error(`No account information provided`);
