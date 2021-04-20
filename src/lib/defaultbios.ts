@@ -9,7 +9,8 @@ export const bios = [
     `Unlucky... 😢`,
     `Donkey roll... 🐴`,
     `Its an eighth... 😞`,
-    `Highroll... 🏦`
+    `Highroll... 🏦`,
+    `Hyper Roll ftw... ⚡`
     // add more as community suggestions
 ]
 

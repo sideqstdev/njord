@@ -3,11 +3,11 @@ import { genSalt, hash, compare } from "bcryptjs"
 import * as jwt from 'jsonwebtoken'
 import { sign, verify } from "jsonwebtoken";
 import { accessSecret, dev, refreshSecret } from "../lib/globals";
-import { tokenTypes } from "../types/types/generic/tokentypes.type";
+import { tokenTypes } from "../types/tokentypes.type";
 import { authUserInterface } from "../types/interfaces/authuser.interface";
 import { promisify } from "util";
 import { Response } from 'express-serve-static-core'
-import { user } from "../types/types/user.type";
+import { user } from "../types/object-types/user.type";
 
 const verifyAsync = promisify(jwt.verify).bind(jwt);
 

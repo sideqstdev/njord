@@ -1,11 +1,11 @@
 import { loginInput } from "../../types/inputs/login.input";
 import contextInterface from "../../types/interfaces/context.interface";
-import { user } from "../../types/types/user.type";
+import { user } from "../../types/object-types/user.type";
 import LoggingService from "../../services/logging.service";
 import { decrypt, createRefreshToken, createAccessToken, sendRefreshToken, sendAccessToken } from "../../services/auth.service";
 import { User } from "@prisma/client";
 import { dev, refreshSecret } from "../../lib/globals";
-import { findUser, updateLastLogin } from "../../client/login/login.client";
+import { findUser, updateLastLogin } from "../../lib/client/login/login.client";
 
 export const loginMutation = async(input: loginInput, ctx: contextInterface): Promise<user> => {
     try{

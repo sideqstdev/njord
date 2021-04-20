@@ -1,7 +1,7 @@
 import { PrismaClient } from "@prisma/client";
 import LoggingService from "../services/logging.service";
 
-export const client = new PrismaClient()
+export const client = new PrismaClient();
 
 export const clientConnect = async() => { // hides logging logic behind function
     try{

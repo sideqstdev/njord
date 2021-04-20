@@ -1,8 +1,8 @@
-import { User } from "@prisma/client";
-import { client } from "../../lib/client";
-import { dev } from "../../lib/globals";
+import { Profile, User } from ".prisma/client";
+import { client } from "../../client";
+import { dev } from "../../globals";
 
-export const findUser = async(email: string): Promise<any> => {
+export const findUser = async(email: string): Promise<User & {profile: Profile}> => {
     try{
         const user = await client.user.findUnique({
             where: {
@@ -22,7 +22,7 @@ export const findUser = async(email: string): Promise<any> => {
     }
 }
 
-export const updateLastLogin = async(email: string): Promise<any> => {
+export const updateLastLogin = async(email: string): Promise<User & {profile: Profile}> => {
     try{
         const user = await client.user.update({
             where: {
@@ -30,6 +30,9 @@ export const updateLastLogin = async(email: string): Promise<any> => {
             },
             data: {
                 lastLogin: new Date()
+            },
+            include: {
+                profile: true,
             }
         })
         if(!user){

@@ -15,6 +15,7 @@ type Mutation {
 
 type Query {
   status: String!
+  user(input: user_input!): user!
 }
 
 input login_input {
@@ -53,4 +54,10 @@ type user {
   suspended: Boolean
   updated: DateTime
   version: Int
+}
+
+input user_input {
+  email: String
+  gamerTag: String
+  userId: String
 }

@@ -1,62 +1,33 @@
 import { registerInput } from "../../types/inputs/register.input";
 import contextInterface from "../../types/interfaces/context.interface";
-import { user } from "../../types/types/user.type";
+import { user } from "../../types/object-types/user.type";
 import { encrypt } from "../../services/auth.service";
-import { client } from "../../lib/client";
-import { User } from "@prisma/client";
 import LoggingService from "../../services/logging.service";
-import { randomBio } from "../../lib/defaultbios";
 import { dev } from "../../lib/globals";
+import { createUser } from "../../lib/client/register/register.client";
 
 export const registerMutation = async(input: registerInput, ctx: contextInterface): Promise<user> => {
     try{
-        if(input){
-            // hash password first before doing anything else
-            const hashPassword: string = await encrypt(input.password);
-            
-            const userCreated: User = await ctx.prisma.user.create({
-                data: {
-                    gamerTag: input.gamerTag,
-                    email: input.email,
-                    password: hashPassword,
-                    profile: {
-                        create: {
-                            bio: randomBio()
-                        }
-                    }
-                }
-            })
-            const expandedUser = await ctx.prisma.user.findUnique({
-                where: {
-                    id: userCreated.id
-                },
-                include: {
-                    profile: true
-                }
-            })
-            LoggingService.info(`Account created for ${expandedUser.email}`)
-            let user: user = {
-                id: expandedUser.id,
-                created: expandedUser.created,
-                updated: expandedUser.updated,
-                lastLogin: expandedUser.lastLogin,
-                version: expandedUser.version,
-                name: expandedUser.name,
-                gamerTag: expandedUser.gamerTag,
-                email: expandedUser.email,
-                suspended: expandedUser.suspended,
-                profile: expandedUser.profile,
-            }
-    
-            // TODO email verification here
+        // hash password first before doing anything else
+        const hashPassword: string = await encrypt(input.password);
 
-            return user
-            
+        // TODO email verification here
+        
+        const createdUser = await createUser(input.email, input.gamerTag, hashPassword);
+        LoggingService.info(`Account created for ${createdUser.email} with id: ${createdUser.id}`);
+        let user: user = {
+            id: createdUser.id,
+            created: createdUser.created,
+            updated: createdUser.updated,
+            lastLogin: createdUser.lastLogin,
+            version: createdUser.version,
+            name: createdUser.name,
+            gamerTag: createdUser.gamerTag,
+            email: createdUser.email,
+            suspended: createdUser.suspended,
+            profile: createdUser.profile,
         }
-        else{
-            LoggingService.error(`No account information provided`)
-            throw new Error(`No account information provided`)
-        }
+        return user
     }
     catch(err){
         // LoggingService.error(err)

@@ -63,8 +63,8 @@ model Post {
   userId String? // post owner id
 }
 
-enum TournamentRole {
-  ATTENDEE
-  MOD
-  ADMIN
-}
+// enum TournamentRole {
+//   ATTENDEE
+//   MOD
+//   ADMIN
+// }
