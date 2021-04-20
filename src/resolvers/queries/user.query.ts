@@ -16,6 +16,6 @@ export const userQuery = async(input: userInput, ctx: contextInterface): Promise
         }
     }
     catch(err){
-        throw new Error(`Internal server error ${dev ? `: ${err}` : null}`);
+        throw new Error(`Internal server error${dev ? `: ${err}` : null}`);
     }
 }

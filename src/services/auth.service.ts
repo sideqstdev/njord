@@ -42,6 +42,24 @@ export const createAccessToken = (user: user): string => {
     }
 }
 
+export const regenerateAccessToken = (userShard: authUserInterface) => {
+    try{
+        const token = sign(
+            {
+                id: userShard.id,
+                gamerTag: userShard.gamerTag,
+            },
+            accessSecret,
+            {
+                expiresIn: `15m`
+            }
+        );
+        return token;
+    }catch(err){
+        throw new Error(`Error whilst regenerating a token: ${dev ? err : null}`);
+    }
+}
+
 export const createRefreshToken = (user: user): string => {
     try{
         const refreshToken = sign(

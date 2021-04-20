@@ -1,4 +1,4 @@
-import { Resolver, Mutation, Arg, Ctx, Query } from "type-graphql";
+import { Resolver, Mutation, Arg, Ctx, Query, Authorized } from "type-graphql";
 import { user } from "../types/object-types/user.type";
 import { registerInput } from "../types/inputs/register.input";
 import contextInterface from "../types/interfaces/context.interface";
@@ -20,6 +20,7 @@ export class accountsResolver {
         return loginMutation(input, ctx);
     }
 
+    @Authorized()
     @Query(() => user)
     async user(@Arg(`input`) input: userInput, @Ctx() ctx: contextInterface){
         return userQuery(input, ctx);
