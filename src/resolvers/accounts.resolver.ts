@@ -7,6 +7,7 @@ import { loginInput } from "../types/inputs/login.input";
 import { loginMutation } from "./mutations/login.mutation";
 import { userInput } from "../types/inputs/user.input";
 import { userQuery } from "./queries/user.query";
+import { currUserQuery } from "./queries/curruser.query";
 
 @Resolver()
 export class accountsResolver {
@@ -24,5 +25,11 @@ export class accountsResolver {
     @Query(() => user)
     async user(@Arg(`input`) input: userInput, @Ctx() ctx: contextInterface){
         return userQuery(input, ctx);
+    }
+
+    @Authorized()
+    @Query(() => user)
+    async currUser(@Ctx() ctx: contextInterface){
+        return currUserQuery(ctx);
     }
 }
