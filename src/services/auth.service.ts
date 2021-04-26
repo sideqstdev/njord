@@ -6,8 +6,9 @@ import { accessSecret, dev, refreshSecret } from "../lib/globals";
 import { tokenTypes } from "../types/tokentypes.type";
 import { authUserInterface } from "../types/interfaces/authuser.interface";
 import { promisify } from "util";
-import { Response } from 'express-serve-static-core'
+import { Response, Request } from 'express-serve-static-core'
 import { user } from "../types/object-types/user.type";
+import { parseCookies } from "../lib/util/cookies.util";
 
 const verifyAsync = promisify(jwt.verify).bind(jwt);
 
@@ -111,11 +112,45 @@ export const sendRefreshToken = (res: Response, token: string): void => {
             domain: `localhost`
         })
     }else{
-        res.cookie(`sqstrc`, token, {
+        res.cookie(`sqstrf`, token, {
             httpOnly: true,
             domain: String(process.env.URL),
             secure: true,
             sameSite: `none`
         })
     }
+}
+
+export const resetTokens = (res: Response): void => {
+    if(dev){
+        //reset access token
+        res.cookie(`sqstac`, ``, {
+            httpOnly: true,
+            domain: `localhost`,
+        })
+        //reset refresh token
+        res.cookie(`sqstrf`, ``, {
+            httpOnly: true,
+            domain: `localhost`,
+        })
+    }else{
+        res.cookie(`sqstac`, ``, {
+            httpOnly: true,
+            sameSite: `none`,
+            secure: true,
+            domain: String(process.env.URL),
+        })
+        res.cookie(`sqstrf`, ``, {
+            httpOnly: true,
+            sameSite: `none`,
+            secure: true,
+            domain: String(process.env.URL),
+        })
+    }
+}
+
+export const hasTokens = (req: Request): boolean => {
+    const cookies: any = parseCookies(req.headers.cookie);
+    let refreshToken = cookies.sqstrf;
+    return (refreshToken ? true : false);
 }

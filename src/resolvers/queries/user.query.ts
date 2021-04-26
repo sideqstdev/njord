@@ -9,7 +9,6 @@ export const userQuery = async(input: userInput, ctx: contextInterface): Promise
     try{
         if(input){
             const user = await getUserWithProfile(input.email, input.gamerTag, input.userId);
-            console.log(user)
             return user;
         }else{
             LoggingService.error(`No user information provided`);

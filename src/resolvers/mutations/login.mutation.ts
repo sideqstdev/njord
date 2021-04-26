@@ -19,6 +19,7 @@ export const loginMutation = async(input: loginInput, ctx: contextInterface): Pr
             }else{
                 const userUpdated = await updateLastLogin(input.email);
 
+                //TODO this is unnecessary now since client functions have been fixed
                 let userToReturn: user = {
                     id: userUpdated.id,
                     created: userUpdated.created,
