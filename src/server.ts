@@ -20,7 +20,7 @@ const start = async() => {
         playground: dev,
         cors: {
             credentials: true,
-            origin: dev ? `http://localhost:3000` : `https://sideqst.com`,
+            origin: dev ? `http://localhost:8081` : `https://sideqst.com`,
         },
         logger: {
             debug: msg => LoggingService.debug(msg),
