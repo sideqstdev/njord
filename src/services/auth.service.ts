@@ -4,7 +4,7 @@ import * as jwt from 'jsonwebtoken'
 import { sign, verify } from "jsonwebtoken";
 import { accessSecret, dev, refreshSecret } from "../lib/globals";
 import { tokenTypes } from "../types/tokentypes.type";
-import { authUserInterface } from "../types/interfaces/authuser.interface";
+import { authTokenInterface, authUserInterface } from "../types/interfaces/authuser.interface";
 import { promisify } from "util";
 import { Response, Request } from 'express-serve-static-core'
 import { user } from "../types/object-types/user.type";
@@ -61,6 +61,24 @@ export const regenerateAccessToken = (userShard: authUserInterface) => {
     }
 }
 
+export const regenerateRefreshToken = (userShard: authUserInterface) => {
+    try{
+        const refreshToken = sign(
+            {
+                id: userShard.id,
+                gamerTag: userShard.gamerTag,
+            },
+            refreshSecret,
+            {
+                expiresIn: `14d`
+            }
+        );
+        return refreshToken;
+    }catch(err){
+        throw new Error(`Error whilst regenerating a refresh token: ${dev ? err : null}`);
+    }
+}
+
 export const createRefreshToken = (user: user): string => {
     try{
         const refreshToken = sign(
@@ -79,7 +97,7 @@ export const createRefreshToken = (user: user): string => {
     }
 }
 
-export const decodeAccessToken = async(token: string, type?: tokenTypes): Promise<authUserInterface> => {
+export const decodeToken = async(token: string, type?: tokenTypes): Promise<authUserInterface> => {
     const secret = type === `refresh` ? refreshSecret : accessSecret;
 
     try{
@@ -87,6 +105,38 @@ export const decodeAccessToken = async(token: string, type?: tokenTypes): Promis
     }catch(err){
         throw new Error(`Error whilst decoding token: ${dev ? err : null}`)
     }
+}
+
+export const decodeTokenExp = async(token: string, type?: tokenTypes): Promise<Date> => {
+    const secret = type === `refresh` ? refreshSecret : accessSecret;
+    try{
+        const decodedPayload: authTokenInterface = await verifyAsync(token, secret)
+        const expDate = new Date(decodedPayload.exp * 1000);
+        return expDate;
+    }catch(err){
+        throw new Error(`Error whilst decoding token ex: ${dev ? err : null}`)
+    }
+}
+
+export const nearExpiration = (expiration: Date, type?: tokenTypes): boolean => {
+    const currDate = Date.now()
+    switch(type){
+        case `access`:
+            // less than 2 minutes left
+            if(currDate - expiration.getTime() <= 2000){
+                return true;
+            }
+            return false;
+        case `refresh`:
+            // less than a day
+            if(currDate - expiration.getTime() <= 86400000){
+                return true
+            }
+            return false;
+        default:
+            return false
+    }
+    
 }
 
 export const sendAccessToken = (res: Response, token: string): void => {

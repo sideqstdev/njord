@@ -1,5 +1,5 @@
 import { AuthChecker } from "type-graphql";
-import { decodeAccessToken, regenerateAccessToken, sendAccessToken } from "../../services/auth.service";
+import { decodeToken, decodeTokenExp, nearExpiration, regenerateAccessToken, regenerateRefreshToken, sendAccessToken, sendRefreshToken } from "../../services/auth.service";
 import LoggingService from "../../services/logging.service";
 import contextInterface from "../../types/interfaces/context.interface";
 import { dev } from "../globals";
@@ -7,54 +7,51 @@ import { parseCookies } from "../util/cookies.util";
 
 export const authChecker: AuthChecker<Partial<contextInterface>> = async({context}): Promise<boolean> => {
     if(!context){ // if no context provided falsy
-        return false
+        return false;
     }
 
-    let token: string = context.req.headers.authorization;
-
-    // refresh token
+    // tokens come from cookies
     let cookies: any = parseCookies(context.req.headers.cookie);
     let refreshToken = cookies.sqstrf;
+    let accessToken = cookies.sqstac;
+
+    // if no refresh token then falsy
     if(!refreshToken){
-        return false
+        LoggingService.error(`Refresh Token wasn't provided`);
+        return false;
     }
-    else{
-        const validRefreshToken = await decodeAccessToken(refreshToken, `refresh`);
-        // if the user has a valid refresh token they will automatically refresh their access token on requests to the server
-        if(validRefreshToken){
-            context.refreshToken = refreshToken;
-            const newAccessToken: string = regenerateAccessToken(validRefreshToken);
-            sendAccessToken(context.res, newAccessToken)
-        }
-        // do nothing if invalid
+    const validRefreshToken = await decodeToken(refreshToken, `refresh`);
+    if(!validRefreshToken){
+        return false;
     }
 
-    if(!token){ // token wasn't provided
-        return false
+    if(!accessToken){ // token wasn't provided
+        LoggingService.error(`Access Token wasn't provided`);
+        return false;
+    }
+    
+    const validAccessToken = await decodeToken(accessToken, `access`);
+    if(!validAccessToken){
+        LoggingService.error(`Invalid Access Token`);
+        return false;
     }
 
-    // no bearer
-    else if(!token.startsWith(`Bearer `)){
-        return false
+    // set context & regenerate tokens
+    context.accessToken = accessToken;
+    context.refreshToken = refreshToken;
+    context.user = validAccessToken;
+
+    // rehydrate tokens if about to expire
+    const accessTokenExp = decodeTokenExp(accessToken, "access");
+    const refreshTokenExp = decodeTokenExp(refreshToken, "refresh");
+    if(nearExpiration(await accessTokenExp, "access")){
+        const newAccessToken: string = regenerateAccessToken(validRefreshToken);
+        sendAccessToken(context.res, newAccessToken);
     }
-
-    else{
-        token = token.slice(7, token.length);
-
-        if(token){
-            try{
-                const validToken = await decodeAccessToken(token, `access`);
-                context.user = validToken;
-                context.accessToken = token;
-                return true;
-            }catch(err){
-                LoggingService.error(`${dev ? err : `Authentication Error`}`)
-                return false;
-            }
-            
-        }
-
-        
-
+    if(nearExpiration(await refreshTokenExp, "refresh")){
+        const newRefreshToken: string = regenerateRefreshToken(validRefreshToken);
+        sendRefreshToken(context.res, newRefreshToken);
     }
+    
+    return true;
 }
