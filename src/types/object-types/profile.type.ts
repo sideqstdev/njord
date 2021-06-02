@@ -12,7 +12,7 @@ export class profile {
     @Field(() => [String])
     tags?: string[];
 
-    @Field()
+    @Field(() => String, {nullable: true})
     lolName?: string;
 
     @Field({nullable: true})

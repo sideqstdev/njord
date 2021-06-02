@@ -25,7 +25,8 @@ export const authChecker: AuthChecker<Partial<contextInterface>> = async({contex
         return false;
     }
 
-    if(!accessToken){ // token wasn't provided
+    // if no access token then falsy
+    if(!accessToken){
         LoggingService.error(`Access Token wasn't provided`);
         return false;
     }
@@ -45,10 +46,12 @@ export const authChecker: AuthChecker<Partial<contextInterface>> = async({contex
     const accessTokenExp = decodeTokenExp(accessToken, "access");
     const refreshTokenExp = decodeTokenExp(refreshToken, "refresh");
     if(nearExpiration(await accessTokenExp, "access")){
+        LoggingService.info(`Access token nearing exp, rehydrated`);
         const newAccessToken: string = regenerateAccessToken(validRefreshToken);
         sendAccessToken(context.res, newAccessToken);
     }
     if(nearExpiration(await refreshTokenExp, "refresh")){
+        LoggingService.info(`Refresh token nearing exp, rehydrated`);
         const newRefreshToken: string = regenerateRefreshToken(validRefreshToken);
         sendRefreshToken(context.res, newRefreshToken);
     }
