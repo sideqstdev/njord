@@ -6,8 +6,9 @@ import { decrypt, createRefreshToken, createAccessToken, sendRefreshToken, sendA
 import { User } from "@prisma/client";
 import { dev, refreshSecret } from "../../lib/globals";
 import { findUser, updateLastLogin } from "../../lib/client/login/login.client";
+import { login_response } from "../../types/responses/loginresponse.type";
 
-export const loginMutation = async(input: loginInput, ctx: contextInterface): Promise<user> => {
+export const loginMutation = async(input: loginInput, ctx: contextInterface): Promise<login_response> => {
     try{
         if(input){
             // throws an error if it can't find a user
@@ -19,7 +20,7 @@ export const loginMutation = async(input: loginInput, ctx: contextInterface): Pr
             }else{
                 const userUpdated = await updateLastLogin(input.email);
 
-                //TODO this is unnecessary now since client functions have been fixed
+                
                 let userToReturn: user = {
                     id: userUpdated.id,
                     created: userUpdated.created,
@@ -40,7 +41,13 @@ export const loginMutation = async(input: loginInput, ctx: contextInterface): Pr
                 sendRefreshToken(ctx.res, refreshToken);
                 sendAccessToken(ctx.res, accessToken);
 
-                return userToReturn;            
+                let response: login_response = {
+                    token: accessToken,
+                    success: true,
+                    user: userUpdated,
+                };
+
+                return response;            
             }
         }else{
             LoggingService.error(`No login information provided`);

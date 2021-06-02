@@ -9,7 +9,7 @@ The javascript `Date` as string. Type represents date and time as the ISO Date s
 scalar DateTime
 
 type Mutation {
-  login(input: login_input!): user!
+  login(input: login_input!): login_response!
   logout: Boolean!
   register(input: register_input!): user!
 }
@@ -23,6 +23,12 @@ type Query {
 input login_input {
   email: String!
   password: String!
+}
+
+type login_response {
+  success: Boolean!
+  token: String!
+  user: user
 }
 
 type profile {

@@ -9,6 +9,7 @@ import { userInput } from "../types/inputs/user.input";
 import { userQuery } from "./queries/user.query";
 import { currUserQuery } from "./queries/curruser.query";
 import { logoutMutation } from "./mutations/logout.mutation";
+import { login_response } from "../types/responses/loginresponse.type";
 
 @Resolver()
 export class accountsResolver {
@@ -17,7 +18,7 @@ export class accountsResolver {
         return registerMutation(input, ctx);
     }
     
-    @Mutation(() => user)
+    @Mutation(() => login_response)
     async login(@Arg(`input`) input: loginInput, @Ctx() ctx: contextInterface){
         return loginMutation(input, ctx);
     }
