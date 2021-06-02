@@ -1,6 +1,6 @@
 export interface authUserInterface {
     id: string;
-    gamerTag: string;
+    role: `admin` | `user`;
 }
 
 export interface authTokenInterface {

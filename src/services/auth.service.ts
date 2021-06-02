@@ -30,7 +30,7 @@ export const createAccessToken = (user: user): string => {
         const token = sign(
             {
                 id: user.id,
-                gamerTag: user.gamerTag,
+                role: `user`,
             },
             accessSecret,
             {
@@ -48,7 +48,7 @@ export const regenerateAccessToken = (userShard: authUserInterface) => {
         const token = sign(
             {
                 id: userShard.id,
-                gamerTag: userShard.gamerTag,
+                role: userShard.role,
             },
             accessSecret,
             {
@@ -66,7 +66,7 @@ export const regenerateRefreshToken = (userShard: authUserInterface) => {
         const refreshToken = sign(
             {
                 id: userShard.id,
-                gamerTag: userShard.gamerTag,
+                role: userShard.role,
             },
             refreshSecret,
             {
@@ -84,7 +84,7 @@ export const createRefreshToken = (user: user): string => {
         const refreshToken = sign(
             {
                 id: user.id,
-                gamerTag: user.gamerTag
+                role: `user`,
             },
             refreshSecret,
             {
