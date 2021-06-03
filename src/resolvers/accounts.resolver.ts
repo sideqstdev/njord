@@ -10,6 +10,8 @@ import { userQuery } from "./queries/user.query";
 import { currUserQuery } from "./queries/curruser.query";
 import { logoutMutation } from "./mutations/logout.mutation";
 import { login_response } from "../types/responses/loginresponse.type";
+import { refreshTokenMutation } from "./mutations/refreshtoken.mutation";
+import { refresh_token_response } from "../types/responses/refreshtokenresponse.type";
 
 @Resolver()
 export class accountsResolver {
@@ -26,6 +28,11 @@ export class accountsResolver {
     @Mutation(() => Boolean)
     async logout(@Ctx() ctx: contextInterface){
         return logoutMutation(ctx);
+    }
+
+    @Mutation(() => refresh_token_response)
+    async refreshToken(@Ctx() ctx: contextInterface){
+        return refreshTokenMutation(ctx);
     }
 
     @Authorized()

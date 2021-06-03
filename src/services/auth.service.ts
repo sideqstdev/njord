@@ -25,11 +25,11 @@ export const decrypt = async(value: string, hash: string) : Promise<boolean> => 
     return success
 }
 
-export const createAccessToken = (user: user): string => {
+export const createAccessToken = (id: string): string => {
     try{
         const token = sign(
             {
-                id: user.id,
+                id: id,
                 role: `user`,
             },
             accessSecret,
@@ -79,11 +79,11 @@ export const regenerateRefreshToken = (userShard: authUserInterface) => {
     }
 }
 
-export const createRefreshToken = (user: user): string => {
+export const createRefreshToken = (id: string): string => {
     try{
         const refreshToken = sign(
             {
-                id: user.id,
+                id: id,
                 role: `user`,
             },
             refreshSecret,

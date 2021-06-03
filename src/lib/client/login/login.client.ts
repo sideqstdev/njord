@@ -18,7 +18,7 @@ export const findUser = async(email: string): Promise<User & {profile: Profile}>
             return user;
         }
     }catch(err){
-        throw new Error(`Error whilst finding user: ${dev ? err : null}`)
+        throw err
     }
 }
 

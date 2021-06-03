@@ -11,6 +11,7 @@ scalar DateTime
 type Mutation {
   login(input: login_input!): login_response!
   logout: Boolean!
+  refreshToken: refresh_token_response!
   register(input: register_input!): user!
 }
 
@@ -43,6 +44,11 @@ type profile {
   tags: [String!]!
   user: user!
   wins: Int!
+}
+
+type refresh_token_response {
+  ok: Boolean!
+  token: String!
 }
 
 input register_input {
