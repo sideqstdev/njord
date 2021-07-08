@@ -41,6 +41,7 @@ export const loginMutation = async(input: loginInput, ctx: contextInterface): Pr
             sendAccessToken(ctx.res, accessToken);
 
             let response: login_response = {
+                refreshToken: refreshToken,
                 token: accessToken,
                 success: true,
                 user: userUpdated,
