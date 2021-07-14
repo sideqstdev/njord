@@ -31,8 +31,8 @@ export class accountsResolver {
     }
 
     @Mutation(() => refresh_token_response)
-    async refreshToken(@Ctx() ctx: contextInterface){
-        return refreshTokenMutation(ctx);
+    async refreshToken(@Arg(`refreshToken`) refreshToken: string, @Ctx() ctx: contextInterface){
+        return refreshTokenMutation(refreshToken, ctx);
     }
 
     @Authorized()

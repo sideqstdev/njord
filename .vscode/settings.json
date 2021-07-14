@@ -1,3 +1,26 @@
 {
-    "typescript.tsdk": "node_modules/typescript/lib"
+    "typescript.tsdk": "node_modules/typescript/lib",
+    "editor.tabSize": 2,
+    "editor.formatOnPaste": true,
+    "javascript.updateImportsOnFileMove.enabled": "always",
+    "editor.minimap.enabled": false,
+    "editor.formatOnSave": true,
+    "[ejs]": {
+        "editor.formatOnSave": true,
+    },
+    "[javascriptreact]": {
+        "editor.formatOnSave": true,
+    },
+    "[typescript]": {
+        "editor.formatOnSave": true,
+        "editor.defaultFormatter": "esbenp.prettier-vscode",
+    },
+    "[typescriptreact]": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode",
+    },
+    "editor.codeActionsOnSave": null,
+    "files.associations": {
+        "*.tsx": "typescriptreact",
+    },
+    "git.suggestSmartCommit": false,
 }
