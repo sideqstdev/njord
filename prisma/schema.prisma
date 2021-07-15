@@ -10,56 +10,57 @@ generator client {
   provider = "prisma-client-js"
 }
 
-model Profile { // seperate public info about a user from their (mostly) private account info
-  id String  @default(uuid()) @id
-  bio String?
-  tags String[]
-  lolName String?
+model Profile {
+  id        String   @id @default(uuid())
+  bio       String?
+  tags      String[]
+  lolName   String?
   avatarUrl String?
 
   // relational fields
-  user User? @relation(fields: [userId], references: [id])
+  user   User?   @relation(fields: [userId], references: [id])
   userId String? @unique
 
   // stats
-  level Int @default(0) // levels are gained by hitting point thresholds
-  points Int @default(0) // total points gained
-  wins Int @default(0) // how many tournament wins
+  level   Int @default(0) // levels are gained by hitting point thresholds
+  points  Int @default(0) // total points gained
+  wins    Int @default(0) // how many tournament wins
   entered Int @default(0) // how many tournaments they have entered
-  hosted Int @default(0) // how many tournaments hosted
+  hosted  Int @default(0) // how many tournaments hosted
 }
 
 model User {
-  id  String @default(uuid()) @id 
-  created DateTime @default(now())
-  updated DateTime @updatedAt
+  id        String   @id @default(uuid())
+  created   DateTime @default(now())
+  updated   DateTime @updatedAt
   lastLogin DateTime @default(now())
-  version Int @default(1)
+  version   Int      @default(1)
 
   // personal info
-  name String?
-  gamerTag String @unique
-  email String @unique
-  password String
+  name      String?
+  gamerTag  String  @unique
+  email     String  @unique
+  password  String
   suspended Boolean @default(false)
-  verified Boolean @default(false)
+  verified  Boolean @default(false)
   // confirmed Boolean @default(false) // email verification
 
   // relational fields
   profile Profile?
-  posts Post[]
+  posts   Post[]
 }
 
 model Post {
-  id String @default(uuid()) @id
-  created DateTime @default(now())
-  updated DateTime @updatedAt
-  content String?
+  id       String   @id @default(uuid())
+  created  DateTime @default(now())
+  updated  DateTime @updatedAt
+  content  String?
   imageUrl String?
-  tags String[]
+  tags     String[]
+  likes    Int      @default(0)
 
   // relational fields
-  user User? @relation(fields: [userId], references: [id]) // post owner
+  user   User?   @relation(fields: [userId], references: [id]) // post owner
   userId String? // post owner id
 }
 
