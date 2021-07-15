@@ -49,6 +49,7 @@ model User {
   profile   Profile?
   posts     Post[]
   followers Followed[]
+  following Following[]
 }
 
 model Post {
@@ -66,9 +67,17 @@ model Post {
 }
 
 model Followed {
-  id         String @id @default(uuid())
-  user       User   @relation(fields: [followedId], references: [id])
-  followedId String
+  id           String   @id @default(uuid())
+  followedDate DateTime @default(now())
+  user         User     @relation(fields: [followedId], references: [id])
+  followedId   String
+}
+
+model Following {
+  id            String   @id @default(uuid())
+  followingDate DateTime @default(now())
+  user          User     @relation(fields: [followingId], references: [id])
+  followingId   String
 }
 
 // enum TournamentRole {
