@@ -48,8 +48,8 @@ model User {
   // relational fields
   profile   Profile?
   posts     Post[]
-  followers Followed[]
-  following Following[]
+  followers User[]   @relation("UserFollowUser", references: [id])
+  following User[]   @relation("UserFollowUser", references: [id])
 }
 
 model Post {
@@ -64,20 +64,6 @@ model Post {
   // relational fields
   user   User?   @relation(fields: [userId], references: [id]) // post owner
   userId String? // post owner id
-}
-
-model Followed {
-  id           String   @id @default(uuid())
-  followedDate DateTime @default(now())
-  user         User     @relation(fields: [followedId], references: [id])
-  followedId   String
-}
-
-model Following {
-  id            String   @id @default(uuid())
-  followingDate DateTime @default(now())
-  user          User     @relation(fields: [followingId], references: [id])
-  followingId   String
 }
 
 // enum TournamentRole {
