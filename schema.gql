@@ -29,7 +29,7 @@ input login_input {
 type login_response {
   refreshToken: String
   success: Boolean!
-  token: String!
+  token: String
   user: user
 }
 

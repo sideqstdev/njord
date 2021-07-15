@@ -3,15 +3,15 @@ import { user } from "../object-types/user.type";
 
 @ObjectType("login_response")
 export class login_response {
-    @Field(() => String, {nullable: false})
-    token: string;
+  @Field(() => String, { nullable: true })
+  token?: string;
 
-    @Field(() => String, {nullable: true})
-    refreshToken?: string;
+  @Field(() => String, { nullable: true })
+  refreshToken?: string;
 
-    @Field(() => Boolean, {nullable: false})
-    success: boolean;
+  @Field(() => Boolean, { nullable: false })
+  success: boolean;
 
-    @Field(() => user, {nullable: true})
-    user?: user;
+  @Field(() => user, { nullable: true })
+  user?: user;
 }

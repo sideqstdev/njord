@@ -16,7 +16,7 @@ export const refreshTokenMutation = async (
   ctx: contextInterface
 ): Promise<refresh_token_response> => {
   try {
-    if (!ctx.refreshToken) {
+    if (refreshToken) {
       return {
         success: false,
         token: ``,
@@ -25,13 +25,15 @@ export const refreshTokenMutation = async (
 
     let payload: any = null;
     try {
-      payload = await decodeToken(ctx.refreshToken, `refresh`);
+      payload = await decodeToken(refreshToken, `refresh`);
     } catch {
       return {
         success: false,
         token: ``,
       };
     }
+
+    console.log(payload);
 
     // refresh token is valid an we can send back an access token
     const user = await client.user.findUnique({
