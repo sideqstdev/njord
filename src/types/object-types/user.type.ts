@@ -23,6 +23,9 @@ export class user {
   @MinLength(3)
   name?: string;
 
+  @Field({ nullable: true })
+  verified: boolean;
+
   @Field()
   @MinLength(3)
   gamerTag: string;

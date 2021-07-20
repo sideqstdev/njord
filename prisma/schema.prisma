@@ -46,10 +46,14 @@ model User {
   // confirmed Boolean @default(false) // email verification
 
   // relational fields
-  profile   Profile?
-  posts     Post[]
-  followers User[]   @relation("UserFollowUser", references: [id])
-  following User[]   @relation("UserFollowUser", references: [id])
+  profile        Profile?
+  posts          Post[]    @relation("UserCreatedPosts")
+  likedPosts     Post[]    @relation("UserLikedPosts")
+  comments       Comment[] @relation("UserCreatedComments")
+  followers      User[]    @relation("UserFollowUser", references: [id])
+  following      User[]    @relation("UserFollowUser", references: [id])
+  joinedLobbies  Lobby[]   @relation("LobbyPlayer")
+  createdLobbies Lobby[]   @relation("LobbyOwner")
 }
 
 model Post {
@@ -59,11 +63,46 @@ model Post {
   content  String?
   imageUrl String?
   tags     String[]
-  likes    Int      @default(0)
 
   // relational fields
-  user   User?   @relation(fields: [userId], references: [id]) // post owner
-  userId String? // post owner id
+  comments Comment[] @relation("PostHasComment")
+  user     User?     @relation("UserCreatedPosts", fields: [userId], references: [id]) // post owner
+  userId   String? // post owner id
+  likedBy  User[]    @relation("UserLikedPosts", references: [id])
+}
+
+model Comment {
+  id      String   @id @default(uuid())
+  created DateTime @default(now())
+  updated DateTime @updatedAt
+
+  // relational fields
+  user   User   @relation("UserCreatedComments", fields: [userId], references: [id])
+  userId String
+  post   Post   @relation("PostHasComment", fields: [postId], references: [id])
+  postId String
+}
+
+model Lobby {
+  id          String   @id @default(uuid())
+  created     DateTime @default(now())
+  updated     DateTime @updatedAt
+  title       String   @unique
+  description String
+  tags        String[]
+  prize       Float
+  startDate   DateTime
+  rank        String
+  featured    Boolean
+  bannerUrl   String
+  status      String
+  format      String
+  region      String
+  maxPlayers  Int      @default(8)
+  players     User[]   @relation("LobbyPlayer", references: [id])
+  owner       User     @relation("LobbyOwner", fields: [ownerId], references: [id])
+  // relational fields
+  ownerId     String
 }
 
 // enum TournamentRole {

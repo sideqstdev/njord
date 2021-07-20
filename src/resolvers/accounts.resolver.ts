@@ -15,35 +15,38 @@ import { refresh_token_response } from "../types/responses/refreshtokenresponse.
 
 @Resolver()
 export class accountsResolver {
-    @Mutation(() => user)
-    async register(@Arg(`input`) input: registerInput, @Ctx() ctx: contextInterface){
-        return registerMutation(input, ctx);
-    }
-    
-    @Mutation(() => login_response)
-    async login(@Arg(`input`) input: loginInput, @Ctx() ctx: contextInterface){
-        return loginMutation(input, ctx);
-    }
+  @Mutation(() => user)
+  async register(
+    @Arg(`input`) input: registerInput,
+    @Ctx() ctx: contextInterface
+  ) {
+    return registerMutation(input, ctx);
+  }
 
-    @Mutation(() => Boolean)
-    async logout(@Ctx() ctx: contextInterface){
-        return logoutMutation(ctx);
-    }
+  @Mutation(() => login_response)
+  async login(@Arg(`input`) input: loginInput, @Ctx() ctx: contextInterface) {
+    return loginMutation(input, ctx);
+  }
 
-    @Mutation(() => refresh_token_response)
-    async refreshToken(@Arg(`refreshToken`) refreshToken: string, @Ctx() ctx: contextInterface){
-        return refreshTokenMutation(refreshToken, ctx);
-    }
+  @Mutation(() => Boolean)
+  async logout(@Ctx() ctx: contextInterface) {
+    return logoutMutation(ctx);
+  }
 
-    @Authorized()
-    @Query(() => user)
-    async user(@Arg(`input`) input: userInput, @Ctx() ctx: contextInterface){
-        return userQuery(input, ctx);
-    }
+  @Mutation(() => refresh_token_response)
+  async refreshToken(@Ctx() ctx: contextInterface) {
+    return refreshTokenMutation(ctx);
+  }
 
-    @Authorized()
-    @Query(() => user)
-    async currUser(@Ctx() ctx: contextInterface){
-        return currUserQuery(ctx);
-    }
+  @Authorized()
+  @Query(() => user)
+  async user(@Arg(`input`) input: userInput, @Ctx() ctx: contextInterface) {
+    return userQuery(input, ctx);
+  }
+
+  @Authorized()
+  @Query(() => user)
+  async currUser(@Ctx() ctx: contextInterface) {
+    return currUserQuery(ctx);
+  }
 }

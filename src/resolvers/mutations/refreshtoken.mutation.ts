@@ -8,15 +8,15 @@ import {
   sendAccessToken,
   sendRefreshToken,
 } from "../../services/auth.service";
+import LoggingService from "../../services/logging.service";
 import contextInterface from "../../types/interfaces/context.interface";
 import { refresh_token_response } from "../../types/responses/refreshtokenresponse.type";
 
 export const refreshTokenMutation = async (
-  refreshToken: string,
   ctx: contextInterface
 ): Promise<refresh_token_response> => {
   try {
-    if (refreshToken) {
+    if (!ctx.refreshToken) {
       return {
         success: false,
         token: ``,
@@ -25,15 +25,13 @@ export const refreshTokenMutation = async (
 
     let payload: any = null;
     try {
-      payload = await decodeToken(refreshToken, `refresh`);
-    } catch {
+      payload = await decodeToken(ctx.refreshToken, `refresh`);
+    } catch (err) {
       return {
         success: false,
         token: ``,
       };
     }
-
-    console.log(payload);
 
     // refresh token is valid an we can send back an access token
     const user = await client.user.findUnique({

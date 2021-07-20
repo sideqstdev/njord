@@ -11,7 +11,7 @@ scalar DateTime
 type Mutation {
   login(input: login_input!): login_response!
   logout: Boolean!
-  refreshToken(refreshToken: String!): refresh_token_response!
+  refreshToken: refresh_token_response!
   register(input: register_input!): user!
 }
 
@@ -42,8 +42,9 @@ type profile {
   level: Int!
   lolName: String
   points: Int!
+  status: String
   tags: [String!]!
-  user: user!
+  user: user
   wins: Int!
 }
 
@@ -68,6 +69,7 @@ type user {
   profile: profile
   suspended: Boolean
   updated: DateTime
+  verified: Boolean
   version: Int
 }
 

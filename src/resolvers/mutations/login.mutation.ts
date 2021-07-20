@@ -29,6 +29,9 @@ export const loginMutation = async (
         profile: true,
       },
     });
+    if (!user) {
+      throw new Error(`User doesn't exist`);
+    }
 
     // validate password
     const validPassword = await decrypt(input.password, user.password);
@@ -41,6 +44,8 @@ export const loginMutation = async (
       const refreshToken: string = createRefreshToken(userUpdated.id);
       const accessToken: string = createAccessToken(userUpdated.id);
 
+      sendRefreshToken(ctx.res, refreshToken);
+
       let response: login_response = {
         refreshToken: refreshToken,
         token: accessToken,
@@ -51,6 +56,6 @@ export const loginMutation = async (
       return response;
     }
   } catch (err) {
-    throw new Error(`Internal server error ${dev ? `: ${err}` : null}`);
+    throw new Error(`${dev ? err : `Internal server error `}`);
   }
 };
