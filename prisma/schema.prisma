@@ -15,7 +15,7 @@ model Profile {
   bio       String?
   tags      String[]
   lolName   String?
-  avatarUrl String?
+  avatarUrl String?  @default("https://ddragon.leagueoflegends.com/cdn/11.15.1/img/profileicon/29.png")
 
   // relational fields
   user   User?   @relation(fields: [userId], references: [id])
@@ -57,12 +57,18 @@ model User {
 }
 
 model Post {
-  id       String   @id @default(uuid())
-  created  DateTime @default(now())
-  updated  DateTime @updatedAt
-  content  String?
-  imageUrl String?
-  tags     String[]
+  id          String   @id @default(uuid())
+  created     DateTime @default(now())
+  updated     DateTime @updatedAt
+  title       String
+  content     String?
+  imageUrl    String?
+  twitchUrl   String?
+  youtubeUrl  String?
+  facebookUrl String?
+  websiteUrl  String?
+  nsfw        Boolean  @default(false)
+  tags        String[]
 
   // relational fields
   comments Comment[] @relation("PostHasComment")
