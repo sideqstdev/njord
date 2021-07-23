@@ -12,6 +12,7 @@ import { logoutMutation } from "./mutations/logout.mutation";
 import { login_response } from "../types/responses/loginresponse.type";
 import { refreshTokenMutation } from "./mutations/refreshtoken.mutation";
 import { refresh_token_response } from "../types/responses/refreshtokenresponse.type";
+import { refreshTokenQuery } from "./queries/refreshtoken.query";
 
 @Resolver()
 export class accountsResolver {
@@ -33,9 +34,9 @@ export class accountsResolver {
     return logoutMutation(ctx);
   }
 
-  @Mutation(() => refresh_token_response)
+  @Query(() => refresh_token_response)
   async refreshToken(@Ctx() ctx: contextInterface) {
-    return refreshTokenMutation(ctx);
+    return refreshTokenQuery(ctx);
   }
 
   @Authorized()

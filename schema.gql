@@ -11,12 +11,12 @@ scalar DateTime
 type Mutation {
   login(input: login_input!): login_response!
   logout: Boolean!
-  refreshToken: refresh_token_response!
   register(input: register_input!): user!
 }
 
 type Query {
   currUser: user!
+  refreshToken: refresh_token_response!
   status: String!
   user(input: user_input!): user!
 }
