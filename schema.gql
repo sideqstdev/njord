@@ -10,6 +10,7 @@ scalar DateTime
 
 type Mutation {
   createPost(input: post_input!): post!
+  deletePost(input: post_delete_input!): Boolean!
   login(input: login_input!): login_response!
   logout: Boolean!
   register(input: register_input!): user!
@@ -56,6 +57,10 @@ type post {
   title: String!
   updated: DateTime
   user: user
+}
+
+input post_delete_input {
+  id: String!
 }
 
 input post_input {

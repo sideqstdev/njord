@@ -1,14 +1,13 @@
-import { client } from "../../lib/client";
-import { postInput } from "../../types/inputs/post.input";
-import contextInterface from "../../types/interfaces/context.interface";
-import { post } from "../../types/object-types/post.type";
+import { client } from "../../../lib/client";
+import { postInput } from "../../../types/inputs/post.input";
+import contextInterface from "../../../types/interfaces/context.interface";
+import { post } from "../../../types/object-types/post.type";
 
 export const createPostMutation = async (
   input: postInput,
   ctx: contextInterface
 ): Promise<post> => {
   try {
-    console.log(ctx.user.id);
     const createdPost = await client.post.create({
       data: {
         title: input.title,
