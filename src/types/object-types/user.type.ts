@@ -1,6 +1,7 @@
 import { Field, ObjectType, ID, Int } from "type-graphql";
 import { IsEmail, MinLength } from "class-validator";
 import { profile } from "./profile.type";
+import { post } from "./post.type";
 
 @ObjectType("user")
 export class user {
@@ -39,4 +40,7 @@ export class user {
 
   @Field(() => profile, { nullable: true })
   profile?: profile | null;
+
+  @Field(() => [post], { nullable: true })
+  posts?: post[];
 }
