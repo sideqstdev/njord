@@ -4,7 +4,7 @@ import { deletePostInput } from "../../../types/inputs/deletePost.input";
 import contextInterface from "../../../types/interfaces/context.interface";
 
 export const deletePostMutation = async (
-  input: deletePostInput,
+  id: string,
   ctx: contextInterface
 ): Promise<boolean> => {
   try {
@@ -24,7 +24,7 @@ export const deletePostMutation = async (
             user: true,
           },
           where: {
-            id: input.id,
+            id: id,
           },
         });
         if (deletedPost) {

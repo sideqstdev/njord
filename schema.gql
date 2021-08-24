@@ -10,7 +10,7 @@ scalar DateTime
 
 type Mutation {
   createPost(input: post_input!): post!
-  deletePost(input: post_delete_input!): Boolean!
+  deletePost(id: String!): Boolean!
   login(input: login_input!): login_response!
   logout: Boolean!
   register(input: register_input!): user!
@@ -18,6 +18,7 @@ type Mutation {
 
 type Query {
   currUser: user!
+  posts(page: pagination_input!): [post!]!
   refreshToken: refresh_token_response!
   status: String!
   user(input: user_input!): user!
@@ -45,6 +46,11 @@ type login_response {
   user: user
 }
 
+input pagination_input {
+  skip: Int = 0
+  take: Int = 15
+}
+
 type post {
   comments: [comment!]
   content: String
@@ -57,10 +63,6 @@ type post {
   title: String!
   updated: DateTime
   user: user
-}
-
-input post_delete_input {
-  id: String!
 }
 
 input post_input {
