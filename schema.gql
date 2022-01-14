@@ -11,6 +11,7 @@ scalar DateTime
 type Mutation {
   createPost(input: post_input!): post!
   deletePost(id: String!): Boolean!
+  likePost(id: String!): Boolean!
   login(input: login_input!): login_response!
   logout: Boolean!
   register(input: register_input!): user!
@@ -57,6 +58,7 @@ type post {
   create: DateTime
   id: ID!
   imageUrl: String
+  likedByIds: [String!]
   likes: Float
   nsfw: Boolean
   tags: [String!]

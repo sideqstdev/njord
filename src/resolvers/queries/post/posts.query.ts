@@ -18,6 +18,7 @@ export const postQuery = async (
         _count: {
           select: { likedBy: true },
         },
+        likedBy: true,
       },
       take: take,
       skip: skip,
@@ -26,14 +27,16 @@ export const postQuery = async (
       },
     });
 
-    let posts: post[] = [];
-    getPosts.map((post, index) => {
+    const posts: post[] = getPosts.map((post, index) => {
+      const likedUsers = post.likedBy.map((user) => user.id);
       const singlePost: post = {
         ...post,
         likes: post._count.likedBy,
+        likedByIds: likedUsers,
       };
-      posts.push(singlePost);
+      return singlePost;
     });
+
     return posts;
   } catch (err) {
     throw new Error(err);

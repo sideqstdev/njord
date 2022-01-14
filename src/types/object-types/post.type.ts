@@ -36,4 +36,7 @@ export class post {
 
   @Field(() => Number, { nullable: true })
   likes: number;
+
+  @Field(() => [String], { nullable: true })
+  likedByIds?: string[];
 }
